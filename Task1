@@ -3,8 +3,12 @@ Erica Muschelli                                                                 
 Spring 2016
 
 Project #1 - Reengineerring Legacy Systems
-Task 1 - Setting up the development environment 
+
+Task 1 - Setting up the development environment
+ 
 Although no one can argue the benefits of learing to use an new IDE and document repository tool with great benefit steming from trying out the features offered by both tools via installing Eclipse, setting up GitHub and GitHub Desktop by completing the tasks required within task 1,  for me the most important learning experince for was really understainding the importance of code documentation and readability and learning how to use the Javadoc tool.  Being a software developer, I have not had the opportunity to work with javadoc until now.  Most of the software application documentation I had written was by hand explained via the develpment of my user manuals, technical manuals, and testing scripts.
+
 Javadoc and how to use Javadoc to convert those necessary comments to output an Web document.  Javadoc allows for human readability especially for those that are tasked with software maintenance.  Javadoc also allows those involved in all forms of testing to have clear understanding as to what the program is supposted to do and what excpetions to look out for.  This documentation is very important as it allows those developers using or modifing the application code a clear understanding as to what each method, class, construt does to include the purpose of the variables, how they are used, and what is returned within the defined methods.  The javadoc tool saves time for the developer allowing them to focus on acutally development/coding and not having to write out specific documentation by hand as to what the application does.  Eclipse having the javadoc tab located at the bottom of the allowing the developer to view the documentation  prior to generating the web page is an added benefit when using the commenting documenttation indicators again saving time, increasing human readability, and overall efficiency.
+
 regarding descripencies regarding how the program is supposed to work and how it actually works. including information about bugs found within the code via the @bug can be very valuable infomration comminicated during testing.
 it allows for developers working different pieces of a project to fully understand the intentions and direction other software developers.
