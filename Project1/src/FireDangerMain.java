@@ -31,12 +31,15 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.Scanner;
 
+
 // TODO: Auto-generated Javadoc
 /**
  * The Class FireDangerMain.
  */
 public class FireDangerMain {
 
+	public static double precipitation;
+	public static double buildUpIndex;
 	/**
 	 * The main method.
 	 *
@@ -48,16 +51,18 @@ public class FireDangerMain {
 		int isSnow;
 		int dryBulbReading;
 		int wetBulbReading;
-		double precipitation;
 		int currentWindSpeed;
-		double buildUpIndex;
 		int herbaceousVegStage;
 		double diff;
+		double FFM = 99; //Fine Fuel Moisture
+		double ADFM = 99; //Adjusted (10 Day Lag) Fuel Moisture
+		double DF = 0; //Drying Factor
+		double FLOAD = 0; //Fire Load Rating (Man-Hour Base)
 		
-		double[] myDouble_A_Array = new double[]{-.185900,-.85900,-.059660, -.077373};
-//		double[] myDouble_B_Array = new double[]{1,2,3};
-		double[] myDouble_C_Array = new double[]{4.5,12.5,27.5};
-		double[] myDouble_D_Array = new double[]{16.0,10.0,7.0,5.0,4.0,3.0};
+		double[] myDouble_A_Array = new double[]{0,-.185900,-.85900,-.059660, -.077373};
+		double[] myDouble_B_Array = new double[]{0,30.0,19.2,13.8,22.5};
+		double[] myDouble_C_Array = new double[]{0,4.5,12.5,27.5};
+		double[] myDouble_D_Array = new double[]{0,16.0,10.0,7.0,5.0,4.0,3.0};
 		
 		Scanner userInput = new Scanner(System.in);
 		
@@ -85,88 +90,62 @@ public class FireDangerMain {
 		
 		//IF THERE IS SNOW ON THE GROUND, all spread index values are zero.
 		//grass = 0, timber = 0, fire load = 0, build up will be adjusted for precipitation
-		if (isSnow == 1)
+		if (isSnow <= 0) //No Snow
 		{
-//			precipitation = precipitation - .1;
-//			if (precipitation < 0 || precipitation == 0)
-			if ((precipitation - .1)>0)
+			
+			//Begin Calculate Fine Fuel Moisture
+			diff = dryBulbReading - wetBulbReading;
+			for (int i = 1; i <= 3; i++) 
 			{
-				
-				//precipitation exceeds .1 inches and the build up index is reduced. 
-				buildUpIndex = -50 * Math.log(1.0 - (1.0 - Math.exp(-buildUpIndex/50)) * Math.exp(-1.175*precipitation-.1));
-				if (buildUpIndex < 0)
-				{
-					buildUpIndex =0;
-				}
+			    if (diff - myDouble_C_Array[i]<=0)
+			    {
+					//buildUpIndex = -50 * Math.log(1.0 - (1.0 - Math.exp(-buildUpIndex/50)) * Math.exp(-1.175*precipitation-.1));
+				    FFM=myDouble_B_Array[i]* Math.exp(myDouble_A_Array[i]*diff);
+				    break;
+			    }
 			}
-			else
+			
+			for (int i = 1; i <= 6; i++) 
 			{
-				
+			    if (diff - myDouble_D_Array[i]>0) //C
+			    {
+			    	//DF = i -1;
+			    }
+			    else
+			    {
+			    	//DF=7;
+			    	break;
+			    }
 			}
-		}	
+			//End Calculate Fine Fuel Moisture
 
-		diff = dryBulbReading - wetBulbReading;
-		
-		//int count = 1;
-		
-		for (int i = 0; i <= 3; i++) 
+		}	
+		else //Yes on snow
 		{
-		    if (diff - myDouble_C_Array[i]>0) //C
-		    {
-		    	i=3;
-		    }
-		    //label 7: FFM=B[i]*exp (A[i]*diff)
-		}
-		
-		for (int i = 0; i <= 5; i++) 
-		{
-		    if (diff - myDouble_D_Array[i]>0) //C
-		    {
-		    	//DF = i -1;
-		    }
-		    else
-		    {
-		    	//DF=6;
-		    	break;
-		    }
+			if (isRaining())
+			{
+				AdjustBuildUpIndex();
+			}
 		}
 	}
 	
-	/**
-	 * Method calculates spread index based on if snow is on the ground or not.
-	 * @param isSnow 
-	 */
-	public static void Snow(int isSnow)
+	public static boolean isRaining() 
 	{
-				
-		//If there is no snow, the fuel moisture and drying factor is calculated.
-				
-	}
+		if ((precipitation - .1)>0)
+		{
+			return true;
+		}
+		else
+			return false;
+	} 
 	
-	public static void calculateFineFuelMoisture(int fuelMoisture)
+	public static void AdjustBuildUpIndex() 
 	{
-		
-	}
-	
-	public static void calculateAdustedFuelMoisture(int fuelMoisture)
-	{
-		
-	}
-	public static void calculateBuildUpIndex(int buildUp)
-	{
-		
-	}
-	public static void calculateFineFuelSpread(int fuelSpread)
-	{
-		
-	}
-	public static void calculateTimberSpreadIndex(int timberSpread)
-	{
-		
-	}
-	
-	public static void calculateFireLoadIndex(int fireLoad)
-	{
-		
-	}
+		//precipitation exceeds .1 inches and the build up index is reduced. 
+		buildUpIndex = -50 * Math.log(1.0 - (1.0 - Math.exp(-buildUpIndex/50)) * Math.exp(-1.175*precipitation-.1));
+		if (buildUpIndex < 0)
+		{
+			buildUpIndex =0;
+		}
+	} 
 }
