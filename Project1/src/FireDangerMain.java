@@ -53,6 +53,8 @@ public class FireDangerMain {
 		int wetBulbReading;
 		int currentWindSpeed;
 		int herbaceousVegStage;
+		int TIMBER;
+		int GRASS;
 		double diff;
 		double FFM = 99; //Fine Fuel Moisture
 		double ADFM = 99; //Adjusted (10 Day Lag) Fuel Moisture
@@ -93,32 +95,82 @@ public class FireDangerMain {
 		if (isSnow <= 0) //No Snow
 		{
 			
-			//Begin Calculate Fine Fuel Moisture
+			// Will refactor each one into a Method if I have the time
+			//Begin Calculate Fine Fuel Moisture; Line 33
 			diff = dryBulbReading - wetBulbReading;
-			for (int i = 1; i <= 3; i++) 
+			for (int i = 1; i <= 4; i++) 
 			{
-			    if (diff - myDouble_C_Array[i]<=0)
-			    {
-					//buildUpIndex = -50 * Math.log(1.0 - (1.0 - Math.exp(-buildUpIndex/50)) * Math.exp(-1.175*precipitation-.1));
-				    FFM=myDouble_B_Array[i]* Math.exp(myDouble_A_Array[i]*diff);
-				    break;
-			    }
+				if (i<4)
+				{
+				    if ((diff - myDouble_C_Array[i])<=0)
+				    {
+					    FFM=myDouble_B_Array[i]* Math.exp(myDouble_A_Array[i]*diff);
+					    break;
+				    }
+				}
+				else
+					FFM=myDouble_B_Array[i]* Math.exp(myDouble_A_Array[i]*diff);
 			}
+			//End Calculate Fine Fuel Moisture; line 38
 			
-			for (int i = 1; i <= 6; i++) 
+			//Begin Calculate Drying Factor; line 39
+			for (int i = 1; i <= 6; i++)
 			{
-			    if (diff - myDouble_D_Array[i]>0) //C
+			    if ((FFM - myDouble_D_Array[i])>0)
 			    {
-			    	//DF = i -1;
+			    	DF = i-1;
+			    	break;
 			    }
 			    else
 			    {
-			    	//DF=7;
-			    	break;
+			    	DF=7;
 			    }
 			}
-			//End Calculate Fine Fuel Moisture
+			//End Calculate Drying Factor; line 44
+			
+			//Begin Adjust Fine Fuel For Herb Stage; line 45
+			if (FFM-1.0 <0)
+				FFM=1;
+			else
+				FFM = FFM + (herbaceousVegStage-1) *5.0;
+			//End Adjust Fine Fuel For Herb Stage; line 47
+			
+			//line 48
+			if (isRaining())
+			{
+				AdjustBuildUpIndex();
+			}
+			//line 49
+			
+			//Start Increase BUI by Drying Factor; line 50
+			if (buildUpIndex <0)
+				buildUpIndex = 0.0;
+			else
+				buildUpIndex = buildUpIndex + DF;
+			//End Increase BUI by Drying Factor; line 52
+			
+			//Start Calculate Adjusted Fuel Moisture; line 53
+			ADFM = .9*FFM + .5 + 9.5 * Math.exp(-buildUpIndex/50);
+			//End Calculate Adjusted Fuel Moisture; line 54
 
+			//Start Fine Fuel Greater than 30%; line 55
+			if (ADFM-30 >= 0)	
+			{
+				TIMBER = 1;
+				if (FFM -30 >=0)
+				{
+					GRASS = 1;
+					//Print all
+					return;
+				}
+				
+			}
+			//End Fine Fuel Greater than 30%; line 55
+			
+			//Start Wind Greater Than 14; 
+			
+			//End Wind Greater Than 14;
+			
 		}	
 		else //Yes on snow
 		{
@@ -127,7 +179,8 @@ public class FireDangerMain {
 				AdjustBuildUpIndex();
 			}
 		}
-	}
+	//Print all
+	} // End of main
 	
 	public static boolean isRaining() 
 	{
