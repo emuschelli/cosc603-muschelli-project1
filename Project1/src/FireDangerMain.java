@@ -203,40 +203,20 @@ public class FireDangerMain {
 				}
 			}
 			//End Calculate Grass and Timber Spread indexes inside of "if"
-			//End WIND Greater than 14; Line 60
+			//End WIND Greater than 14; Line 74
 			
-			/*
-			if (ADFM-30 >= 0)
-			{
-				if (FFM -30 >=0)	
-				{
-					TIMBER = 1;
-					GRASS = 1;
-					//Print all
-					return;				
-				}
-				else
-				{
-					if (WIND-14 >=0)
-					{ //STOP at line 60
-//						GRASS = .00918*(WIND+14) * (33-FFM) **1.65 -3;
-					}
-				}
-				
-			}
-			//Start Fine Fuel Greater than 30%; line 55
+			//Start Both BUI and TIMBER Spread index = 0; Line 75
+			if ((TIMBER <=0) & (buildUpIndex <=0))
+				return;
+			//End Both BUI and TIMBER Spread index = 0; LINE 77
 			
-			if (WIND-14 <= 0)
-			{ 
-				TIMBER = .00918 *(WIND+14) * (33.-ADFM)**
-			}
-			//End Fine Fuel Greater than 30%; line 55
-			*/
-			
-			//Start Wind Greater Than 14; 
-			
-			//End Wind Greater Than 14;
-			
+			//Start Calculate Fire Load Index; Line 78
+			//FLOAD = 1.75*ANLOG10(TIMBER) + .32*ANLOG10(buildUpIndex) - 1.64;
+			if (FLOAD <= 0)
+				FLOAD = 0;
+			else
+				FLOAD = 10 ** FLOAD;
+			//End Calculate Fire Load Index; Line 84
 		}	
 		else //Yes on snow
 		{
