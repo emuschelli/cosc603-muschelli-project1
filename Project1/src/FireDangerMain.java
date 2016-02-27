@@ -54,6 +54,7 @@ public class FireDangerMain {
 		int currentWindSpeed;
 		int herbaceousVegStage;
 		int TIMBER;
+		int WIND = 0;
 		int GRASS;
 		double diff;
 		double FFM = 99; //Fine Fuel Moisture
@@ -153,17 +154,29 @@ public class FireDangerMain {
 			ADFM = .9*FFM + .5 + 9.5 * Math.exp(-buildUpIndex/50);
 			//End Calculate Adjusted Fuel Moisture; line 54
 
-			//Start Fine Fuel Greater than 30%; line 55
-			if (ADFM-30 >= 0)	
+			if (ADFM-30 >= 0)
 			{
-				TIMBER = 1;
-				if (FFM -30 >=0)
+				if (FFM -30 >=0)	
 				{
+					TIMBER = 1;
 					GRASS = 1;
 					//Print all
-					return;
+					return;				
+				}
+				else
+				{
+					if (WIND-14 >=0)
+					{ //STOP at line 60
+//						GRASS = .00918*(WIND+14) * (33-FFM) **1.65 -3;
+					}
 				}
 				
+			}
+			//Start Fine Fuel Greater than 30%; line 55
+			
+			if (WIND-14 <= 0)
+			{ 
+				TIMBER = .00918 *(WIND+14) * (33.-ADFM)**
 			}
 			//End Fine Fuel Greater than 30%; line 55
 			
