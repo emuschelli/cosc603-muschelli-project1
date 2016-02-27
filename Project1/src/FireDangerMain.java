@@ -94,7 +94,6 @@ public class FireDangerMain {
 	//Print all
 	} // End of main
 	
-	
 	// Recreated the "DANGER" Subroutine
 	public static void Danger(	int iDRY, int iWET, int iSNOW, double dPRECIP, 
 								int iWIND, double dBUO, int iHERB, double dDF, 
@@ -184,49 +183,38 @@ public class FireDangerMain {
 			if (iWIND < 14) // Is less than 14
 			{
 				if (iTIMBER != 1)
-				{
-					iTIMBER = (int) (.01312*(iWIND+6) * (Math.pow((33 -dADFM),1.65) -3));
-				}
+					iTIMBER = (int) (.01312 * (iWIND + 6) * (Math.pow((33 - dADFM),1.65) - 3));
 				
-				iGRASS = (int) ((.01312*(iWIND+6)) * (Math.pow((33-dFFM),1.65) -3));
+				iGRASS = (int) ((.01312 * (iWIND + 6)) * (Math.pow((33 - dFFM),1.65) - 3));
 				if (iTIMBER <=0)
-				{
 					iTIMBER = 1;
-				}
 				
 				if (iGRASS < 0 )
-				{
 					iGRASS =1;
-				}
 			}
 			else // is greater than 14
 			{
 				if (iTIMBER != 1)
-				{
-					iTIMBER = (int) ((.00918 *(iWIND +14)) * (Math.pow((33-dADFM),1.65) -3));
-				}
-				iGRASS = (int)(.00918*(iWIND+14) * (Math.pow((33-dFFM), 1.65) -3));
+					iTIMBER = (int) ((.00918 * (iWIND + 14)) * (Math.pow((33 - dADFM),1.65) - 3));
 				
-				if (iGRASS >0)
-				{
+				iGRASS = (int)(.00918 * (iWIND + 14) * (Math.pow((33 - dFFM), 1.65) - 3));
+				
+				if (iGRASS > 0)
 					iGRASS = 99;
-				}
 				
 				if (iTIMBER > 99)
-				{
 					iTIMBER = 99;
-				}
 			}
 			//End Calculate Grass and Timber Spread indexes inside of "if"
 			//End WIND Greater than 14; Line 74
 			
 			//Start Both BUI and TIMBER Spread index = 0; Line 75
-			if ((iTIMBER <=0) & (dBUO <=0))
+			if ((iTIMBER <= 0) & (dBUO <= 0))
 				return;
 			//End Both BUI and TIMBER Spread index = 0; LINE 77
 			
 			//Start Calculate Fire Load Index; Line 78
-			dFLOAD = (1.75*Math.log10(iTIMBER)) + ((.32*Math.log10(dBUO)) - 1.64);
+			dFLOAD = (1.75 * Math.log10(iTIMBER)) + ((.32 * Math.log10(dBUO)) - 1.64);
 			if (dFLOAD <= 0)
 				dFLOAD = 0;
 			else
@@ -238,7 +226,7 @@ public class FireDangerMain {
 			if (isRaining(dPRECIP))
 			{
 				//precipitation exceeds .1 inches and the build up index is reduced. 
-				dBUO = -50 * Math.log(1.0 - (1.0 - Math.exp(-dBUO/50)) * Math.exp(-1.175*dBUO-.1));
+				dBUO = -50 * Math.log(1.0 - (1.0 - Math.exp(-dBUO/50)) * Math.exp(-1.175 * dBUO - .1));
 				if (dBUO < 0)
 				{
 					dBUO =0;
