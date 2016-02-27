@@ -170,11 +170,11 @@ public class FireDangerMain {
 			{
 				if (TIMBER != 1)
 				{
-					//TIMBER = .01312*(WIND+6) * (33 -ADFM)**1.65 -3;
+					TIMBER = (int) (.01312*(WIND+6) * (Math.pow((33 -ADFM),1.65) -3));
 				}
 				
-				//GRASS = .01312*(WIND+6) * (33-FFM)**1.65 -3;
-				if (TMBER <=0)
+				GRASS = (int) ((.01312*(WIND+6)) * (Math.pow((33-FFM),1.65) -3));
+				if (TIMBER <=0)
 				{
 					TIMBER = 1;
 				}
@@ -188,9 +188,9 @@ public class FireDangerMain {
 			{
 				if (TIMBER != 1)
 				{
-					//TIMBER = .00918 *(WIND +14) * (33-ADFM)**1.65 -3;
+					TIMBER = (int) ((.00918 *(WIND +14)) * (Math.pow((33-ADFM),1.65) -3));
 				}
-				//GRASS = .00918*(WIND+14) * (33-FFM)** 1.65 -3;
+				GRASS = (int)(.00918*(WIND+14) * (Math.pow((33-FFM), 1.65) -3));
 				
 				if (GRASS >0)
 				{
@@ -211,11 +211,11 @@ public class FireDangerMain {
 			//End Both BUI and TIMBER Spread index = 0; LINE 77
 			
 			//Start Calculate Fire Load Index; Line 78
-			//FLOAD = 1.75*ANLOG10(TIMBER) + .32*ANLOG10(buildUpIndex) - 1.64;
+			FLOAD = (1.75*Math.log10(TIMBER)) + ((.32*Math.log10(buildUpIndex)) - 1.64);
 			if (FLOAD <= 0)
 				FLOAD = 0;
 			else
-				FLOAD = 10 ** FLOAD;
+				FLOAD = Math.pow(10,FLOAD);
 			//End Calculate Fire Load Index; Line 84
 		}	
 		else //Yes on snow
@@ -227,6 +227,12 @@ public class FireDangerMain {
 		}
 	//Print all
 	} // End of main
+	
+	public static void Danger(	int iDRY, int iWET, int iSNOW, double dPRECIP, 
+								int iWIND, double dBUO, int iHERB, double dDF, )
+	{
+		
+	}
 	
 	public static boolean isRaining() 
 	{
