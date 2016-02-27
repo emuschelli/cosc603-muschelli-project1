@@ -163,15 +163,11 @@ public class FireDangerMain {
 			//End Is raining; line 52
 			//End Increase BUI by Drying Factor; line 52
 			
-			if (dBUO < 0)
-				dBUO = 0;
-			else
-				dBUO = dBUO + dDF;
-			
 			//Start Calculate Adjusted Fuel Moisture; line 53
 			dADFM = .9*dFFM + .5 + 9.5 * Math.exp(-dBUO/50);
 			//End Calculate Adjusted Fuel Moisture; line 54
 
+			//Start Fine Fuel Greater than 30; line 54
 			if (dADFM>=30)
 			{
 				iTIMBER = 1;
@@ -181,6 +177,7 @@ public class FireDangerMain {
 					return;
 				}					
 			}
+			//End Fine Fuel Greater than 30; line 60
 			
 			//Start WIND Greater than 14; Line 60
 			//Start Calculate Grass and Timber Spread indexes inside of "if"
@@ -258,16 +255,5 @@ public class FireDangerMain {
 		}
 		else
 			return false;
-	} 
-	
-	public static double AdjustBuildUpIndex(double dBUO) 
-	{
-		//precipitation exceeds .1 inches and the build up index is reduced. 
-		dBUO = -50 * Math.log(1.0 - (1.0 - Math.exp(-dBUO/50)) * Math.exp(-1.175*dBUO-.1));
-		if (dBUO < 0)
-		{
-			dBUO =0;
-		}
-		return dBUO;
 	} 
 }
