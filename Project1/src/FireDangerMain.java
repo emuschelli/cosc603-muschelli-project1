@@ -53,9 +53,9 @@ public class FireDangerMain {
 		int wetBulbReading;
 		int currentWindSpeed;
 		int herbaceousVegStage;
-		int TIMBER;
+		int TIMBER = 0;
 		int WIND = 0;
-		int GRASS;
+		int GRASS = 0;
 		double diff;
 		double FFM = 99; //Fine Fuel Moisture
 		double ADFM = 99; //Adjusted (10 Day Lag) Fuel Moisture
@@ -154,6 +154,58 @@ public class FireDangerMain {
 			ADFM = .9*FFM + .5 + 9.5 * Math.exp(-buildUpIndex/50);
 			//End Calculate Adjusted Fuel Moisture; line 54
 
+			if (ADFM>=30)
+			{
+				TIMBER = 1;
+				if (FFM >=30)
+				{
+					GRASS = 1;
+					return;
+				}					
+			}
+			
+			//Start WIND Greater than 14; Line 60
+			//Start Calculate Grass and Timber Spread indexes inside of "if"
+			if (WIND < 14) // Is less than 14
+			{
+				if (TIMBER != 1)
+				{
+					//TIMBER = .01312*(WIND+6) * (33 -ADFM)**1.65 -3;
+				}
+				
+				//GRASS = .01312*(WIND+6) * (33-FFM)**1.65 -3;
+				if (TMBER <=0)
+				{
+					TIMBER = 1;
+				}
+				
+				if (GRASS < 0 )
+				{
+					GRASS =1;
+				}
+			}
+			else // is greater than 14
+			{
+				if (TIMBER != 1)
+				{
+					//TIMBER = .00918 *(WIND +14) * (33-ADFM)**1.65 -3;
+				}
+				//GRASS = .00918*(WIND+14) * (33-FFM)** 1.65 -3;
+				
+				if (GRASS >0)
+				{
+					GRASS = 99;
+				}
+				
+				if (TIMBER > 99)
+				{
+					TIMBER = 99;
+				}
+			}
+			//End Calculate Grass and Timber Spread indexes inside of "if"
+			//End WIND Greater than 14; Line 60
+			
+			/*
 			if (ADFM-30 >= 0)
 			{
 				if (FFM -30 >=0)	
@@ -179,6 +231,7 @@ public class FireDangerMain {
 				TIMBER = .00918 *(WIND+14) * (33.-ADFM)**
 			}
 			//End Fine Fuel Greater than 30%; line 55
+			*/
 			
 			//Start Wind Greater Than 14; 
 			
