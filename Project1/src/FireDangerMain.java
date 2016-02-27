@@ -38,8 +38,8 @@ import java.util.Scanner;
  */
 public class FireDangerMain {
 
-	public static double precipitation;
-	public static double buildUpIndex;
+//	public static double precipitation;
+//	public static double buildUpIndex;
 	/**
 	 * The main method.
 	 *
@@ -48,25 +48,20 @@ public class FireDangerMain {
 	public static void main(String[] args) 
 	{
 		//Declare Variables
-		int isSnow;
-		int dryBulbReading;
-		int wetBulbReading;
-		int currentWindSpeed;
-		int herbaceousVegStage;
-		int TIMBER = 0;
-		int WIND = 0;
-		int GRASS = 0;
-		double diff;
-		double FFM = 99; //Fine Fuel Moisture
-		double ADFM = 99; //Adjusted (10 Day Lag) Fuel Moisture
-		double DF = 0; //Drying Factor
-		double FLOAD = 0; //Fire Load Rating (Man-Hour Base)
-		
-		double[] myDouble_A_Array = new double[]{0,-.185900,-.85900,-.059660, -.077373};
-		double[] myDouble_B_Array = new double[]{0,30.0,19.2,13.8,22.5};
-		double[] myDouble_C_Array = new double[]{0,4.5,12.5,27.5};
-		double[] myDouble_D_Array = new double[]{0,16.0,10.0,7.0,5.0,4.0,3.0};
-		
+		int isSnow =0;
+		int iDryBulbTemperature = 0;
+		int iWetBulbTemperature = 0;
+		int iHerbState = 0;
+		int iTimberSpreadIndex = 0;
+		int iWindSpeed = 0;
+		int iGrassSpreadIndex = 0;
+		double dPrecipitation = 0;
+		double dbuildUpIndex = 0;
+		double dFineFuleMoisture = 99; //Fine Fuel Moisture
+		double dAdjusted10DayFuleMoisture = 99; //Adjusted (10 Day Lag) Fuel Moisture
+		double dDryFactor = 0; //Drying Factor
+		double dFireLoadRatio = 0; //Fire Load Rating (Man-Hour Base)
+	
 		Scanner userInput = new Scanner(System.in);
 		
 		//Prompt user to enter in Fire Danger Data
@@ -74,169 +69,183 @@ public class FireDangerMain {
 		isSnow = userInput.nextInt();
 		
 		System.out.println("Please enter in the Dry Bulb Reading value:");
-		dryBulbReading = userInput.nextInt();
+		iDryBulbTemperature = userInput.nextInt();
 		
 		System.out.println("Please enter in the Wet Bulb Reading value");
-		wetBulbReading = userInput.nextInt();
+		iWetBulbTemperature = userInput.nextInt();
 		
 		System.out.println("Please enter in the preceding 24-hour precipitation value: ");
-		precipitation = userInput.nextInt();
+		dPrecipitation = userInput.nextInt();
 		
 		System.out.println("Please enter in the current wind speed value: ");
-		currentWindSpeed = userInput.nextInt();
+		iWindSpeed = userInput.nextInt();
 		
 		System.out.println("Please enter in yesterday's build up index value:");
-		buildUpIndex = userInput.nextInt();
+		dbuildUpIndex = userInput.nextInt();
 		
 		System.out.println("Please enter in the current hervaceous stage of vegetation value:");
-		herbaceousVegStage = userInput.nextInt();
+		iHerbState = userInput.nextInt();
+		
+		Danger(	iDryBulbTemperature, iWetBulbTemperature, 
+				isSnow, dPrecipitation, iWindSpeed, 
+				dbuildUpIndex, iHerbState, dDryFactor,
+				dFineFuleMoisture, dAdjusted10DayFuleMoisture, 
+				iGrassSpreadIndex, iTimberSpreadIndex,
+				dFireLoadRatio);
+		
+	//Print all
+	} // End of main
+	
+	public static void Danger(	int iDRY, int iWET, int iSNOW, double dPRECIP, 
+								int iWIND, double dBUO, int iHERB, double dDF, 
+								double dFFM, double dADFM, int iGRASS,
+								int iTIMBER, double dFLOAD)
+	{
+		double dDIF;
+		double[] myDouble_A_Array = new double[]{0,-.185900,-.85900,-.059660, -.077373};
+		double[] myDouble_B_Array = new double[]{0,30.0,19.2,13.8,22.5};
+		double[] myDouble_C_Array = new double[]{0,4.5,12.5,27.5};
+		double[] myDouble_D_Array = new double[]{0,16.0,10.0,7.0,5.0,4.0,3.0};
 		
 		//IF THERE IS SNOW ON THE GROUND, all spread index values are zero.
 		//grass = 0, timber = 0, fire load = 0, build up will be adjusted for precipitation
-		if (isSnow <= 0) //No Snow
+		if (iSNOW <= 0) //No Snow
 		{
 			
 			// Will refactor each one into a Method if I have the time
 			//Begin Calculate Fine Fuel Moisture; Line 33
-			diff = dryBulbReading - wetBulbReading;
+			dDIF = iDRY - iWET;
 			for (int i = 1; i <= 4; i++) 
 			{
 				if (i<4)
 				{
-				    if ((diff - myDouble_C_Array[i])<=0)
+				    if ((dDIF - myDouble_C_Array[i])<=0)
 				    {
-					    FFM=myDouble_B_Array[i]* Math.exp(myDouble_A_Array[i]*diff);
+				    	dFFM=myDouble_B_Array[i]* Math.exp(myDouble_A_Array[i]*dDIF);
 					    break;
 				    }
 				}
 				else
-					FFM=myDouble_B_Array[i]* Math.exp(myDouble_A_Array[i]*diff);
+					dFFM=myDouble_B_Array[i]* Math.exp(myDouble_A_Array[i]*dDIF);
 			}
 			//End Calculate Fine Fuel Moisture; line 38
 			
 			//Begin Calculate Drying Factor; line 39
 			for (int i = 1; i <= 6; i++)
 			{
-			    if ((FFM - myDouble_D_Array[i])>0)
+			    if ((dFFM - myDouble_D_Array[i])>0)
 			    {
-			    	DF = i-1;
+			    	dDF = i-1;
 			    	break;
 			    }
 			    else
 			    {
-			    	DF=7;
+			    	dDF=7;
 			    }
 			}
 			//End Calculate Drying Factor; line 44
 			
 			//Begin Adjust Fine Fuel For Herb Stage; line 45
-			if (FFM-1.0 <0)
-				FFM=1;
+			if (dFFM-1.0 <0)
+				dFFM=1;
 			else
-				FFM = FFM + (herbaceousVegStage-1) *5.0;
+				dFFM = dFFM + (iHERB-1) *5.0;
 			//End Adjust Fine Fuel For Herb Stage; line 47
 			
 			//line 48
-			if (isRaining())
+			if (isRaining(dPRECIP))
 			{
-				AdjustBuildUpIndex();
+				AdjustBuildUpIndex(dBUO);
 			}
 			//line 49
 			
 			//Start Increase BUI by Drying Factor; line 50
-			if (buildUpIndex <0)
-				buildUpIndex = 0.0;
+			if (dBUO <0)
+				dBUO = 0.0;
 			else
-				buildUpIndex = buildUpIndex + DF;
+				dBUO = dBUO + dDF;
 			//End Increase BUI by Drying Factor; line 52
 			
 			//Start Calculate Adjusted Fuel Moisture; line 53
-			ADFM = .9*FFM + .5 + 9.5 * Math.exp(-buildUpIndex/50);
+			dADFM = .9*dFFM + .5 + 9.5 * Math.exp(-dBUO/50);
 			//End Calculate Adjusted Fuel Moisture; line 54
 
-			if (ADFM>=30)
+			if (dADFM>=30)
 			{
-				TIMBER = 1;
-				if (FFM >=30)
+				iTIMBER = 1;
+				if (dFFM >=30)
 				{
-					GRASS = 1;
+					iGRASS = 1;
 					return;
 				}					
 			}
 			
 			//Start WIND Greater than 14; Line 60
 			//Start Calculate Grass and Timber Spread indexes inside of "if"
-			if (WIND < 14) // Is less than 14
+			if (iWIND < 14) // Is less than 14
 			{
-				if (TIMBER != 1)
+				if (iTIMBER != 1)
 				{
-					TIMBER = (int) (.01312*(WIND+6) * (Math.pow((33 -ADFM),1.65) -3));
+					iTIMBER = (int) (.01312*(iWIND+6) * (Math.pow((33 -dADFM),1.65) -3));
 				}
 				
-				GRASS = (int) ((.01312*(WIND+6)) * (Math.pow((33-FFM),1.65) -3));
-				if (TIMBER <=0)
+				iGRASS = (int) ((.01312*(iWIND+6)) * (Math.pow((33-dFFM),1.65) -3));
+				if (iTIMBER <=0)
 				{
-					TIMBER = 1;
+					iTIMBER = 1;
 				}
 				
-				if (GRASS < 0 )
+				if (iGRASS < 0 )
 				{
-					GRASS =1;
+					iGRASS =1;
 				}
 			}
 			else // is greater than 14
 			{
-				if (TIMBER != 1)
+				if (iTIMBER != 1)
 				{
-					TIMBER = (int) ((.00918 *(WIND +14)) * (Math.pow((33-ADFM),1.65) -3));
+					iTIMBER = (int) ((.00918 *(iWIND +14)) * (Math.pow((33-dADFM),1.65) -3));
 				}
-				GRASS = (int)(.00918*(WIND+14) * (Math.pow((33-FFM), 1.65) -3));
+				iGRASS = (int)(.00918*(iWIND+14) * (Math.pow((33-dFFM), 1.65) -3));
 				
-				if (GRASS >0)
+				if (iGRASS >0)
 				{
-					GRASS = 99;
+					iGRASS = 99;
 				}
 				
-				if (TIMBER > 99)
+				if (iTIMBER > 99)
 				{
-					TIMBER = 99;
+					iTIMBER = 99;
 				}
 			}
 			//End Calculate Grass and Timber Spread indexes inside of "if"
 			//End WIND Greater than 14; Line 74
 			
 			//Start Both BUI and TIMBER Spread index = 0; Line 75
-			if ((TIMBER <=0) & (buildUpIndex <=0))
+			if ((iTIMBER <=0) & (dBUO <=0))
 				return;
 			//End Both BUI and TIMBER Spread index = 0; LINE 77
 			
 			//Start Calculate Fire Load Index; Line 78
-			FLOAD = (1.75*Math.log10(TIMBER)) + ((.32*Math.log10(buildUpIndex)) - 1.64);
-			if (FLOAD <= 0)
-				FLOAD = 0;
+			dFLOAD = (1.75*Math.log10(iTIMBER)) + ((.32*Math.log10(dBUO)) - 1.64);
+			if (dFLOAD <= 0)
+				dFLOAD = 0;
 			else
-				FLOAD = Math.pow(10,FLOAD);
+				dFLOAD = Math.pow(10,dFLOAD);
 			//End Calculate Fire Load Index; Line 84
 		}	
 		else //Yes on snow
 		{
-			if (isRaining())
+			if (isRaining(dPRECIP))
 			{
-				AdjustBuildUpIndex();
+				AdjustBuildUpIndex(dBUO);
 			}
 		}
-	//Print all
-	} // End of main
-	
-	public static void Danger(	int iDRY, int iWET, int iSNOW, double dPRECIP, 
-								int iWIND, double dBUO, int iHERB, double dDF, )
-	{
-		
 	}
 	
-	public static boolean isRaining() 
+	public static boolean isRaining(double dPrecipitation) 
 	{
-		if ((precipitation - .1)>0)
+		if ((dPrecipitation - .1)>0)
 		{
 			return true;
 		}
@@ -244,13 +253,14 @@ public class FireDangerMain {
 			return false;
 	} 
 	
-	public static void AdjustBuildUpIndex() 
+	public static double AdjustBuildUpIndex(double dBUO) 
 	{
 		//precipitation exceeds .1 inches and the build up index is reduced. 
-		buildUpIndex = -50 * Math.log(1.0 - (1.0 - Math.exp(-buildUpIndex/50)) * Math.exp(-1.175*precipitation-.1));
-		if (buildUpIndex < 0)
+		dBUO = -50 * Math.log(1.0 - (1.0 - Math.exp(-dBUO/50)) * Math.exp(-1.175*dBUO-.1));
+		if (dBUO < 0)
 		{
-			buildUpIndex =0;
+			dBUO =0;
 		}
+		return dBUO;
 	} 
 }
