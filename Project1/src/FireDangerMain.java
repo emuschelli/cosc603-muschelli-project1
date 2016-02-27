@@ -38,8 +38,6 @@ import java.util.Scanner;
  */
 public class FireDangerMain {
 
-//	public static double precipitation;
-//	public static double buildUpIndex;
 	/**
 	 * The main method.
 	 *
@@ -96,16 +94,18 @@ public class FireDangerMain {
 	//Print all
 	} // End of main
 	
+	
+	// Recreated the "DANGER" Subroutine
 	public static void Danger(	int iDRY, int iWET, int iSNOW, double dPRECIP, 
 								int iWIND, double dBUO, int iHERB, double dDF, 
 								double dFFM, double dADFM, int iGRASS,
 								int iTIMBER, double dFLOAD)
 	{
 		double dDIF;
-		double[] myDouble_A_Array = new double[]{0,-.185900,-.85900,-.059660, -.077373};
+		double[] myDouble_A_Array = new double[]{0,-.1859,-.859,-.05966, -.077373};
 		double[] myDouble_B_Array = new double[]{0,30.0,19.2,13.8,22.5};
 		double[] myDouble_C_Array = new double[]{0,4.5,12.5,27.5};
-		double[] myDouble_D_Array = new double[]{0,16.0,10.0,7.0,5.0,4.0,3.0};
+		double[] myDouble_D_Array = new double[]{0,16,10,7,5,4,3};
 		
 		//IF THERE IS SNOW ON THE GROUND, all spread index values are zero.
 		//grass = 0, timber = 0, fire load = 0, build up will be adjusted for precipitation
@@ -117,16 +117,11 @@ public class FireDangerMain {
 			dDIF = iDRY - iWET;
 			for (int i = 1; i <= 4; i++) 
 			{
-				if (i<4)
-				{
-				    if ((dDIF - myDouble_C_Array[i])<=0)
-				    {
-				    	dFFM=myDouble_B_Array[i]* Math.exp(myDouble_A_Array[i]*dDIF);
-					    break;
-				    }
-				}
-				else
-					dFFM=myDouble_B_Array[i]* Math.exp(myDouble_A_Array[i]*dDIF);
+			    if (((dDIF - myDouble_C_Array[i])<=0) ||  i == 4)
+			    {
+			    	dFFM=myDouble_B_Array[i]* Math.exp(myDouble_A_Array[i]*dDIF);
+				    break;
+			    }
 			}
 			//End Calculate Fine Fuel Moisture; line 38
 			
@@ -146,25 +141,32 @@ public class FireDangerMain {
 			//End Calculate Drying Factor; line 44
 			
 			//Begin Adjust Fine Fuel For Herb Stage; line 45
-			if (dFFM-1.0 <0)
+			if (dFFM-1.0 < 0)
+			{
 				dFFM=1;
-			else
-				dFFM = dFFM + (iHERB-1) *5.0;
+			}
+
+			dFFM = dFFM + (iHERB - 1) * 5;
 			//End Adjust Fine Fuel For Herb Stage; line 47
 			
-			//line 48
+			//Start Is raining; line 48
 			if (isRaining(dPRECIP))
 			{
-				AdjustBuildUpIndex(dBUO);
+				//Start Increase BUI by Drying Factor; line 49
+				//precipitation exceeds .1 inches and the build up index is reduced. 
+				dBUO = -50 * Math.log(1.0 - (1.0 - Math.exp(-dBUO/50)) * Math.exp(-1.175*dBUO-.1));
+				if (dBUO < 0)
+					dBUO =0;
+				else
+					dBUO = dBUO + dDF;
 			}
-			//line 49
+			//End Is raining; line 52
+			//End Increase BUI by Drying Factor; line 52
 			
-			//Start Increase BUI by Drying Factor; line 50
-			if (dBUO <0)
-				dBUO = 0.0;
+			if (dBUO < 0)
+				dBUO = 0;
 			else
 				dBUO = dBUO + dDF;
-			//End Increase BUI by Drying Factor; line 52
 			
 			//Start Calculate Adjusted Fuel Moisture; line 53
 			dADFM = .9*dFFM + .5 + 9.5 * Math.exp(-dBUO/50);
@@ -238,7 +240,12 @@ public class FireDangerMain {
 		{
 			if (isRaining(dPRECIP))
 			{
-				AdjustBuildUpIndex(dBUO);
+				//precipitation exceeds .1 inches and the build up index is reduced. 
+				dBUO = -50 * Math.log(1.0 - (1.0 - Math.exp(-dBUO/50)) * Math.exp(-1.175*dBUO-.1));
+				if (dBUO < 0)
+				{
+					dBUO =0;
+				}
 			}
 		}
 	}
