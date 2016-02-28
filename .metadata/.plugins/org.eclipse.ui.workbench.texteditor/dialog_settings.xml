@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<section name="Workbench">
+	<section name="org.eclipse.ui.texteditor.FindReplaceDialog_dialogBounds">
+		<item value="305" key="DIALOG_WIDTH"/>
+		<item value="411" key="DIALOG_Y_ORIGIN"/>
+		<item value="444" key="DIALOG_HEIGHT"/>
+		<item value="638" key="DIALOG_X_ORIGIN"/>
+		<item value="1|Segoe UI|9.0|0|WINDOWS|1|-15|0|0|0|400|0|0|0|1|0|0|0|0|Segoe UI" key="DIALOG_FONT_NAME"/>
+	</section>
+	<section name="org.eclipse.ui.texteditor.FindReplaceDialog">
+		<item value="true" key="wrap"/>
+		<item value="false" key="isRegEx"/>
+		<item value="false" key="casesensitive"/>
+		<item value="false" key="incremental"/>
+		<item value="false" key="wholeword"/>
+		<item value="return" key="selection"/>
+		<list key="findhistory">
+			<item value="return"/>
+			<item value="WIND"/>
+			<item value="FLOAD"/>
+			<item value="GRASS"/>
+			<item value="TIMBER"/>
+			<item value="ADFM"/>
+			<item value="FFM"/>
+			<item value="herb"/>
+		</list>
+		<list key="replacehistory">
+			<item value="iWIND"/>
+			<item value="dFLOAD"/>
+			<item value="iGRASS"/>
+			<item value="iTIMBER"/>
+			<item value="dADFM"/>
+			<item value="dFFM"/>
+			<item value="dDIF"/>
+			<item value="dryBulbReading"/>
+		</list>
+	</section>
+</section>

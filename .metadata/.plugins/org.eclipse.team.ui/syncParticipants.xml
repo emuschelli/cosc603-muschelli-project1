@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<syncparticipants>
+<participant displayName="Git (RemoteSystemsTempFiles)" id="org.eclipse.egit.ui.modelCompareParticipant" secondary_id="1456199925320">
+<data forceFetch="false" root="true">
+<org.eclipse.team.ui.MODEL_PARTICIPANT_SETTINGS org.eclipse.team.ui.MODEL_PARTICIPANT_DESCRIPTION="RemoteSystemsTempFiles" startupAction="none">
+<org.eclipse.team.ui.MODEL_PARTICIPANT_REFRESH_SCHEDULE org.eclipse.team.ui.CTX_REFRESHSCHEDULE_ENABLED="false" org.eclipse.team.ui.CTX_REFRESHSCHEDULE_INTERVAL="3600" org.eclipse.team.ui.CTX_REFRESHSCHEDULE_RUNONCE="false"/>
+<org.eclipse.team.ui.MODEL_PARTICIPANT_MAPPINGS modelProviderId="org.eclipse.core.resources.modelProvider">
+<mappings>
+<resources resourcePath="/RemoteSystemsTempFiles" resourceType="4"/>
+</mappings>
+</org.eclipse.team.ui.MODEL_PARTICIPANT_MAPPINGS>
+</org.eclipse.team.ui.MODEL_PARTICIPANT_SETTINGS>
+<gitSynchronizeData container="C:/Users/emusc_000/workspace/Project1/cosc603-muschelli-project1/Project1" dstRev="HEAD" inludeLocal="false" srcRev="HEAD"/>
+</data>
+</participant>
+</syncparticipants>
