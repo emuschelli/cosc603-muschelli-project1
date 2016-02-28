@@ -39,9 +39,10 @@ import java.util.Scanner;
 public class FireDangerMain {
 
 	/**
-	 * The main method. Used for computing national fire danger ratings and fire load index data.
+	 * The main method.
 	 *
-	 * @param args the arguments to be used by the program.
+	 * @param args
+	 *            the arguments
 	 */
 	
 	//BEGIN - Main Method
@@ -112,21 +113,34 @@ public class FireDangerMain {
 	} // END - Main Method
 	
 	/**
-	 * Subroutine DANGER Routine for computing national fire danger ratings and fire load index based on the input entered in by the user.
-	 * 
-	 * @param iDRY Dry Bulb Temperature.
-	 * @param iWET Wet Bulb Temperature
-	 * @param iSNOW equal to 1 if there is Snow on the ground and 0 if there is no Snow
-	 * @param dPRECIP Rain
-	 * @param iWIND Current Wind Speed in miles per hour
-	 * @param dBUO Last Value of the Build Up Index
-	 * @param iHERB Current Herb State of District.  1= cured, 2=transition, 3=green
-	 * @param dDF Drying Factor
-	 * @param dFFM Fine Fuel Moisture
-	 * @param dADFM Adjusted (10 day lag) Fuel Moisture
-	 * @param iGRASS Grass Spread Index
-	 * @param iTIMBER Timber Spread Index
-	 * @param dFLOAD Fire Load Rating (Man-Hour Base)
+	 * Danger.
+	 *
+	 * @param iDRY
+	 *            the i dry
+	 * @param iWET
+	 *            the i wet
+	 * @param iSNOW
+	 *            the i snow
+	 * @param dPRECIP
+	 *            the d precip
+	 * @param iWIND
+	 *            the i wind
+	 * @param dBUO
+	 *            the d buo
+	 * @param iHERB
+	 *            the i herb
+	 * @param dDF
+	 *            the d df
+	 * @param dFFM
+	 *            the d ffm
+	 * @param dADFM
+	 *            the d adfm
+	 * @param iGRASS
+	 *            the i grass
+	 * @param iTIMBER
+	 *            the i timber
+	 * @param dFLOAD
+	 *            the d fload
 	 */
 	public static void Danger(	int iDRY, int iWET, int iSNOW, double dPRECIP, 
 								int iWIND, double dBUO, int iHERB, double dDF, 
@@ -407,11 +421,11 @@ public class FireDangerMain {
 	}
 	
 	/**
-	 * This method calculates the amount of precipitation. 
-	 * The returned value is passed in to the Yes Snow and NO Snow part of the main "If" conditional statement.
-	 * <p>
-	 * @param dPrecipitation is the preceding 24-hour precipitation value
-	 * @return true if precipitation value is greater then 0
+	 * Checks if is raining.
+	 *
+	 * @param dPrecipitation
+	 *            the d precipitation
+	 * @return true, if is raining
 	 */
 	public static boolean isRaining(double dPrecipitation) 
 	{
