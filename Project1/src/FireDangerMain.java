@@ -223,6 +223,7 @@ public class FireDangerMain {
 				dFFM=1;
 			}
 
+			dADFM = dADFM(dPRECIP, dBUO, iHERB, dDF, dFFM, dADFM);
 			dFFM = dFFM + (iHERB - 1) * 5;
 			//END - Adjust Fine Fuel For Herb Stage; line 47
 			
@@ -253,9 +254,7 @@ public class FireDangerMain {
 			//Adjust the Grass Index for Heavy Fuel Lags.
 			//The result will be the Timber Spread Index, the Adjusted Fuel Moisture, ADFM, Adjusted for Heavy Fuels, Will not be computed
 			
-			//BEGIN - Calculate Adjusted Fuel Moisture; line 53
-			dADFM = .9*dFFM + .5 + 9.5 * Math.exp(-dBUO/50);
-			//END - Calculate Adjusted Fuel Moisture; line 54
+			
 
 			/**
 			 * The program tests to see if the fuel moisture is grater than 30%.  
@@ -418,6 +417,22 @@ public class FireDangerMain {
 			System.out.println ("Buid Up Index = " + dBUO);
 			System.out.println ("Fire Load Rating = " + dFLOAD);
 		}
+	}
+
+	private static double dADFM(double dPRECIP, double dBUO, int iHERB,
+			double dDF, double dFFM, double dADFM) {
+		dFFM = dFFM + (iHERB - 1) * 5;
+		if (isRaining(dPRECIP)) {
+			dBUO = -50
+					* Math.log(1.0 - (1.0 - Math.exp(-dBUO / 50))
+							* Math.exp(-1.175 * dBUO - .1));
+			if (dBUO < 0)
+				dBUO = 0;
+			else
+				dBUO = dBUO + dDF;
+		}
+		dADFM = .9 * dFFM + .5 + 9.5 * Math.exp(-dBUO / 50);
+		return dADFM;
 	}
 	
 	/**

@@ -10,7 +10,6 @@
 </mappings>
 </org.eclipse.team.ui.MODEL_PARTICIPANT_MAPPINGS>
 </org.eclipse.team.ui.MODEL_PARTICIPANT_SETTINGS>
-<gitSynchronizeData container="C:/Users/emusc_000/workspace/Project1/cosc603-muschelli-project1/Project1" dstRev="HEAD" inludeLocal="false" srcRev="HEAD"/>
 </data>
 </participant>
 </syncparticipants>
